@@ -76,7 +76,7 @@ class Solution {
             idx.add(k);
         }
         
-        while(idx.iterator().hasNext()) {
+        while(idx.iterator().hasNext()) { // Set을 변경하면서 iterator를 순회하는 것을 위험하다!Iterator는 내부 값이 변경되면 동시성 에러를 뱉는다. (ConcurrentModificationException)
         answer++;
         dfs(computers, idx, idx.iterator().next());
         }
