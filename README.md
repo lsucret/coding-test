@@ -157,6 +157,18 @@ Day 28 – 실전 점검
 
 Level 2 문제 랜덤 1개 (제한 시간 40분)
 
+---
+
+Day 29 - 다익스트라 (easy)
+
+✔️ 배달 (Delivery)
+https://school.programmers.co.kr/learn/courses/30/lessons/12978
+
+Day 30 - 다익스트라 (hard)
+
+✔️ 합승 택시 요금 (Shared Taxi Fare)
+https://school.programmers.co.kr/learn/courses/30/lessons/72413
+
 
 
 
