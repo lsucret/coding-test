@@ -3,77 +3,6 @@ Day 17 – 정렬 + 구현
 
 파일명 정렬 (Lv2) https://school.programmers.co.kr/learn/courses/30/lessons/17686
 
-```java
-/*정확성  테스트
-테스트 1 〉	통과 (5.63ms, 86.4MB)
-테스트 2 〉	통과 (4.37ms, 94.3MB)
-테스트 3 〉	통과 (29.65ms, 82.7MB)
-테스트 4 〉	통과 (28.91ms, 82.7MB)
-테스트 5 〉	통과 (21.38ms, 76.8MB)
-테스트 6 〉	통과 (19.23ms, 81.8MB)
-테스트 7 〉	통과 (19.26ms, 94.9MB)
-테스트 8 〉	통과 (22.17ms, 93.2MB)
-테스트 9 〉	통과 (20.31ms, 85.8MB)
-테스트 10 〉	통과 (18.83ms, 98.7MB)
-테스트 11 〉	통과 (21.98ms, 84.4MB)
-테스트 12 〉	통과 (21.77ms, 91.4MB)
-테스트 13 〉	통과 (18.59ms, 81.7MB)
-테스트 14 〉	통과 (24.91ms, 79.7MB)
-테스트 15 〉	통과 (35.31ms, 97.8MB)
-테스트 16 〉	통과 (24.32ms, 95.2MB)
-테스트 17 〉	통과 (32.50ms, 96.6MB)
-테스트 18 〉	통과 (25.08ms, 94.3MB)
-테스트 19 〉	통과 (18.57ms, 94.6MB)
-테스트 20 〉	통과 (31.85ms, 85.7MB)
-*/
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-class Solution {
-    public String[] solution(String[] files) {
-        return Arrays.stream(files)
-            .map(FileName::new)
-            .sorted(new FileNameComparator())
-            .map(f -> f.getFileName())
-            .toArray(String[]::new);
-    }
-}
-
-class FileNameComparator implements Comparator<FileName> {
-    @Override
-    public int compare(FileName s1, FileName s2) {
-        int headResult = s1.getHead().compareToIgnoreCase(s2.getHead());
-        if (headResult != 0) {
-            return headResult;
-        }
-        return s1.getNumber() - s2.getNumber();
-    }
-}
-
-class FileName {
-    private String head;
-    private int number;
-    private String fileName;
-    
-    public FileName(String fileName) {
-        Pattern pattern1 = Pattern.compile("\\D+"); // 숫자가 아닌 문자
-        Pattern pattern2 = Pattern.compile("\\d+"); // 숫자
-        Matcher matcher1 = pattern1.matcher(fileName);
-        Matcher matcher2 = pattern2.matcher(fileName);
-        matcher1.find();
-        matcher2.find();
-        this.head = matcher1.group();
-        this.number = Integer.parseInt(matcher2.group(), 10);
-        this.fileName = fileName;
-        // System.out.println(head +","+ number);
-    }
-    public String getHead() {return head;}
-    public int getNumber() {return number;}
-    public String getFileName() {return fileName;}
-}
-```
-
 
 ```java
 /*정확성  테스트
@@ -160,4 +89,82 @@ class Solution {
     }
 }
 
+```
+
+
+
+내 풀이
+- 속도가 느림
+- Pattern 객체를 매번 생성.
+- Stream 생성 비용
+- 정규표현식 생성 비용(상수비용 100단어 * 1000개)
+```java
+/*정확성  테스트
+테스트 1 〉	통과 (5.63ms, 86.4MB)
+테스트 2 〉	통과 (4.37ms, 94.3MB)
+테스트 3 〉	통과 (29.65ms, 82.7MB)
+테스트 4 〉	통과 (28.91ms, 82.7MB)
+테스트 5 〉	통과 (21.38ms, 76.8MB)
+테스트 6 〉	통과 (19.23ms, 81.8MB)
+테스트 7 〉	통과 (19.26ms, 94.9MB)
+테스트 8 〉	통과 (22.17ms, 93.2MB)
+테스트 9 〉	통과 (20.31ms, 85.8MB)
+테스트 10 〉	통과 (18.83ms, 98.7MB)
+테스트 11 〉	통과 (21.98ms, 84.4MB)
+테스트 12 〉	통과 (21.77ms, 91.4MB)
+테스트 13 〉	통과 (18.59ms, 81.7MB)
+테스트 14 〉	통과 (24.91ms, 79.7MB)
+테스트 15 〉	통과 (35.31ms, 97.8MB)
+테스트 16 〉	통과 (24.32ms, 95.2MB)
+테스트 17 〉	통과 (32.50ms, 96.6MB)
+테스트 18 〉	통과 (25.08ms, 94.3MB)
+테스트 19 〉	통과 (18.57ms, 94.6MB)
+테스트 20 〉	통과 (31.85ms, 85.7MB)
+*/
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+class Solution {
+    public String[] solution(String[] files) {
+        return Arrays.stream(files)
+            .map(FileName::new)
+            .sorted(new FileNameComparator())
+            .map(f -> f.getFileName())
+            .toArray(String[]::new);
+    }
+}
+
+class FileNameComparator implements Comparator<FileName> {
+    @Override
+    public int compare(FileName s1, FileName s2) {
+        int headResult = s1.getHead().compareToIgnoreCase(s2.getHead());
+        if (headResult != 0) {
+            return headResult;
+        }
+        return s1.getNumber() - s2.getNumber();
+    }
+}
+
+class FileName {
+    private String head;
+    private int number;
+    private String fileName;
+    
+    public FileName(String fileName) {
+        Pattern pattern1 = Pattern.compile("\\D+"); // 숫자가 아닌 문자
+        Pattern pattern2 = Pattern.compile("\\d+"); // 숫자
+        Matcher matcher1 = pattern1.matcher(fileName);
+        Matcher matcher2 = pattern2.matcher(fileName);
+        matcher1.find();
+        matcher2.find();
+        this.head = matcher1.group();
+        this.number = Integer.parseInt(matcher2.group(), 10);
+        this.fileName = fileName;
+        // System.out.println(head +","+ number);
+    }
+    public String getHead() {return head;}
+    public int getNumber() {return number;}
+    public String getFileName() {return fileName;}
+}
 ```
